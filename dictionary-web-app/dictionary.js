@@ -14,21 +14,45 @@ function Fetch(api) {
 }
 
 const phonetic = document.getElementById("phonetic");
-
-const Meaning = document.getElementById("Meaning");
+// const Meaning = document.getElementById("Meaning");
 const sourceUrls = document.getElementById("sourceUrls");
 const word_ = document.getElementById("word");
+const wordname = document.getElementById("wordname");
+
+const nounMeaning = document.getElementById("noun-mean");
+const synonyms = document.getElementById("synonyms");
+const verbMeaning = document.getElementById("verb-mean");
 
 function wordfetch() {
   let word = word_.value;
   const api = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
   Fetch(api)
     .then(data => {
-      console.log(data);
-      phonetic.textContent = `${data.phonetic}`;
-      Meaning.textContent = `${data.meanings[0].definitions[0].definition}`;
-      sourceUrls.textContent = `${data.sourceUrls}`;
-      sourceUrls.setAttribute("href", `${data.sourceUrls}`);
+      phonetic.textContent = data.phonetic;
+      // Meaning.textContent = `${data.meanings[0].definitions[0].definition}`;
+      wordname.textContent = data.word;
+      sourceUrls.textContent = data.sourceUrls;
+      sourceUrls.setAttribute("href", data.sourceUrls);
+      synonyms.textContent = data.meanings[0].synonyms;
+
+      for (let i = 0; i < data.meanings[0].definitions.length; i++) {
+        const element = data.meanings[0].definitions[i];
+        console.log(element);
+        let meanings = document.createElement("li");
+        // meanings++;
+        meanings.textContent = element.definition;
+        nounMeaning.appendChild(meanings);
+      }
+      for (let i = 0; i < data.meanings[1].definitions.length; i++) {
+        const element = data.meanings[1].definitions[i];
+        console.log(element);
+        let meanings = document.createElement("li");
+        // meanings++;
+        meanings.textContent = element.definition;
+        verbMeaning.appendChild(meanings);
+      }
+
+      // data.meanings[0].definitions.map(ele => console.log(ele));
     })
     .catch(err => console.log(err));
 }
@@ -37,7 +61,7 @@ document.getElementById("submit").addEventListener("click", () => {
   wordfetch();
 });
 
-document.getElementById("word").addEventListener("change", () => {
+word_.addEventListener("change", () => {
   document.addEventListener("keydown", event => {
     if (event.key === "Enter") {
       wordfetch();

@@ -4,41 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dictionary</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dictionary.css">
 </head>
 <body>
 
     <main>
        <div class="dictionary">
-         <div class="top"></div>
+         <div class="top">
+           <div class="left">
+            <img class="logo" src="./assets/images/logo.svg" alt="">
+           </div>
+            <div class="right">
+                <p>San serif</p> <img class="arrow" src="./assets/images/icon-arrow-down.svg" alt="">
+                <div class="hline">
+
+                </div>
+               <div class="mode-toggler">
+                <input type="checkbox" name="" id="">
+                <img src="./assets/images/icon-moon.svg" alt="">
+               </div>
+            </div>
+         </div>
          <div class="search">
-            <input type="text" name="word" id="word">
-            <img src="" alt="search">
+            <input placeholder="Search for any word..." type="text" name="word" id="word">
+            <img id="submit" src="./assets/images/icon-search.svg" alt="search">
          </div>
          <div class="word">
-            <h1>Keyboard</h1>
-            <p>/ki:b:d/</p>
-            <img src="" alt="play sound">
+           <div>
+            <h1 id="wordname">Keyboard</h1>
+            <p id="phonetic">/ki:b:d/</p>
+           </div>
+            <img src="./assets/images/icon-play.svg" alt="play sound">
          </div>
-         <p>noun</p>
+        <div class="noun">
+            <p>noun</p>
+            <div class="line">
+
+            </div>
+        </div>
          <div class="meaning">
             <p>Meaning</p>
-            <ul>
-                <li>Meanin 1</li>
-                <li>Meanin 2</li>
-                <li>Meanin 3</li>
+            <ul id="noun-mean">
+                
             </ul>
          </div>
-         <p>Synonyms<span id="">electronic keyboard</span></p>
-         <p>Verb</p>
+         <p>Synonyms<span id="synonyms">electronic keyboard</span></p>
+         <div class="verb">
+            <p>verb</p>
+            <div class="line">
+    
+            </div>
+         </div>
           <div class="meaning">
             <p>Meaning</p>
-            <ul>
-                <li>Meanin 1</li>
+            <ul id="verb-mean">
+                
                 
             </ul>
           </div>
-          <p>Soucre <span><a href="">source link</a></span></p>
+          
+          <div class="line"></div>
+          <div class="source-links">
+            <p>Source</p>
+           <div class="link">
+            <a id="sourceUrls" href="https://en.wiktionary.org/wiki/keyboard" target="_blank">https://en.wiktionary.org/wiki/keyboard</a>
+            <img src="./assets/images/icon-new-window.svg" alt="">
+           </div>
+          </div>
+         
        </div>
     </main>
     
@@ -48,6 +81,6 @@
 <h1 id="phonetic"></h1>
 <p id="Meaning"></p>
 <a id="sourceUrls" href=""></a> -->
-    <!-- <script src="script.js"></script> -->
+    <script src="dictionary.js"></script>
 </body>
 </html>
