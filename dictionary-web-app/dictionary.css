@@ -1,0 +1,33 @@
+* {
+    padding: 0;
+    margin: 0;
+    
+}
+
+
+
+body{
+    background: #ffff;
+    font-family: sans-serif,serif,monospace;
+}
+
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.dictionary{
+    margin-top: 20px;
+    max-width: 400px;
+    background: #ff4646;
+}
+
+.search{
+    display: flex;
+    justify-content: space-between;
+    background: #c8c8c8;
+}
