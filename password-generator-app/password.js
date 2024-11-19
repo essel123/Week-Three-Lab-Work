@@ -9,6 +9,7 @@ const option2 = document.getElementById("option2");
 const option3 = document.getElementById("option3");
 const option4 = document.getElementById("option4");
 const showVisual = document.getElementById("show-visual");
+let genPassword = "";
 
 number.textContent = slider.value;
 copy.addEventListener("click", () => {
@@ -52,8 +53,7 @@ function generatePassword() {
     alert("Please select at least one character type for the password.");
     return;
   }
-  let genPassword = "";
-
+  genPassword = ''
   for (let i = 0; i < passwordLength; i++) {
     const randomIndex = Math.floor(Math.random() * passwordChars.length);
     genPassword += passwordChars[randomIndex];
@@ -94,7 +94,6 @@ option3.addEventListener('click', handleCheckboxClick);
 option4.addEventListener('click', handleCheckboxClick);
 
 genPasswordBtn.addEventListener("click", () => {
-  password.textContent =""
   generatePassword();
    
 });
