@@ -4,7 +4,9 @@ function Fetch(api) {
     res
       .then(results => {
         if (!results.ok) {
-          reject("Error in fetching data");
+          reject(()=>{
+             console.log("error")
+          });
         } else {
           return results.json();
         }
@@ -22,8 +24,9 @@ const wordname = document.getElementById("wordname");
 const nounMeaning = document.getElementById("noun-mean");
 const synonyms = document.getElementById("synonyms");
 const verbMeaning = document.getElementById("verb-mean");
-const content = document.getElementById("content")
- 
+const content = document.getElementById("content");
+const errorMessage = document.getElementById("error-message");
+const wordNotFound =  document.getElementById("word-not-found")
 
 function wordfetch() {
   let word = word_.value;
@@ -56,27 +59,58 @@ function wordfetch() {
 
       // data.meanings[0].definitions.map(ele => console.log(ele));
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      content.style.display = 'none'
+      wordNotFound.style.display = 'flex'
+      throw new Error(err);
+      
+    });
 }
 
 document.getElementById("submit").addEventListener("click", () => {
-  wordfetch();
+  
+
+  if(!word_.value)
+  {
+    errorMessage.style.display = 'flex'
+    content.style.display = "none";
+    wordNotFound.style.display = 'none'
+
+  }
+  else{
+    wordfetch();
+    errorMessage.style.display = 'none'
+    content.style.display = "flex";
+    wordNotFound.style.display = 'none'
+  }
 });
 
-word_.addEventListener("change", () => {
-  document.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-       document.getElementById("main").removeChild( content)
-           wordfetch();
-        content.style.display= "flex"
-    } else {
-      return null;
-    }
-  });
-});
-
-
-const mode = document.getElementById("mode")
-mode.addEventListener('click',(event)=>{
-  console.log()
+word_.addEventListener('change',()=>{
+ 
+document.addEventListener('keydown',(event)=>{
+  if (event.key === 'Enter') {
+    if(!event.target.value)
+      {
+      console.log("Nothing")
+      }
+    
+  }
 })
+ 
+})
+
+
+function playAudio(url){
+  
+  const audiio = new Audio
+}
+
+const mode = document.getElementById("mode");
+mode.addEventListener("click", event => {
+  if (mode.checked) {
+    document.body.classList.add('dark')
+  } else {
+    document.body.classList.remove('dark')
+  }
+});
+

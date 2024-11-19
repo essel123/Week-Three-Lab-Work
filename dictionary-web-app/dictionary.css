@@ -1,6 +1,19 @@
+:root {
+    --bg: white;
+    --color:#757575;
+    --color_:#1F1F1F
+}
+
+.dark {
+    --bg: #050505;
+    --color:white;
+    --color_:white
+}
+
 body {
-    background: #ffff;
+    background: var(--bg);
     font-family: sans-serif, serif, monospace;
+    transition: 0.5s ease-out;
 }
 
 main {
@@ -11,18 +24,43 @@ main {
     align-items: center;
 }
 
-input {
+.top {
+    margin-bottom: 20px;
+}
+
+.search {
     width: 100%;
     height: 100%;
     border: none;
     background: transparent;
     outline: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    
 }
+.searchbox{
+    position: relative;
+}
+.searchbox img{
+    position: absolute;
+    top: 20px;
+    right: 10px;
 
-.content{
+}
+.search::placeholder {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color_);
+}
+.search:focus{
+    border: 1px solid #A445ED;
+}
+.content {
     display: none;
     flex-direction: column;
 }
+
 .dictionary {
     padding: 10px;
     width: 100%;
@@ -30,9 +68,10 @@ input {
     box-sizing: border-box;
 }
 
-.top {
-    padding-top: 58px;
-    padding-bottom: 58px;
+#wordname{
+    color: var(--color_);
+    font-size: 54px;
+    font-weight: bold;
 }
 
 
@@ -47,7 +86,8 @@ input {
     width: 32px;
 }
 
-.top, .word {
+.top,
+.word {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -74,7 +114,7 @@ input {
 .mode-toggler img {
     width: 19.99px;
     height: 20px;
-    
+
 
 }
 
@@ -98,6 +138,7 @@ input {
 .word img {
     width: 75px;
     height: 75px;
+    cursor: pointer;
 }
 
 .word p {
@@ -105,18 +146,20 @@ input {
 }
 
 .meaning {
-    color: #2d2d2d;
+    color: var(--color);
 }
 
 .meaning p {
     color: #757575;
 }
 
-.noun, .verb {
+.noun,
+.verb {
     display: flex;
     align-items: center;
     gap: 15px;
     justify-content: space-between;
+    color: var(--color_);
 }
 
 .line {
@@ -150,15 +193,11 @@ ul li {
     align-items: center;
 }
 
-.source-links p, .source-links .link a {
+.source-links p,
+.source-links .link a {
     text-decoration: underline;
-    color: #757575;
+    color: var(--color);
 }
-
-
-
-
-
 
 /* The switch - the box around the slider */
 .switch {
@@ -166,17 +205,17 @@ ul li {
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
+}
+
+/* Hide default HTML checkbox */
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  /* The slider */
-  .slider {
+}
+
+/* The slider */
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -186,13 +225,13 @@ ul li {
     background-color: #757575;
     -webkit-transition: .4s;
     transition: .4s;
-  }
+}
 
-  .slider:hover{
-        background: #A445ED;
-  }
-  
-  .slider:before {
+.slider:hover {
+    background: #A445ED;
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -202,27 +241,77 @@ ul li {
     background-color: white;
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked+.slider {
     background-color: #A445ED;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus+.slider {
     box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+
+/* Rounded sliders */
+.slider.round {
     border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
     border-radius: 50%;
-  }
+}
+
+
+select {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    width: 100px;
+    height: 50px;
+    background: var(--bg);
+    color: var(--color);
+
+}
+
+select option {
+    padding: 20px;
+}
+
+
+.word-not-found {
+    margin-top: 100px;
+    width: 100%;
+    max-width: 737px;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.emoji,
+.error {
+    padding-bottom: 30px;
+    
+}
+
+.error{
+    font-weight: bold;
+    color: var(--color_);
+}
+
+.message{
+    color: var(--color_);
+}
+.error-message {
+    display: none;
+    color: #FF5252;
+    font-size: 20px;
+}

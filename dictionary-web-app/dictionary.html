@@ -1,97 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dictionary</title>
-    <link rel="stylesheet" href="dictionary.css">
-</head>
-<body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Dictionary</title>
+      <link rel="stylesheet" href="dictionary.css">
+   </head>
+   <body>
 
-    <main>
-       <div class="dictionary">
-         <div class="top">
-           <div class="left">
-            <img class="logo" src="./assets/images/logo.svg" alt="">
-           </div>
-            <div class="right">
-                <p>San serif</p> <img class="arrow" src="./assets/images/icon-arrow-down.svg" alt="">
-                <div class="hline">
+      <main>
+         <div class="dictionary">
+            <div class="top">
+               <div class="left">
+                  <img class="logo" src="./assets/images/logo.svg" alt>
+               </div>
+               <div class="right">
 
-                </div>
-               <div class="mode-toggler">
-                  <label class="switch">
-                     <input type="checkbox" id="mode">
-                     <span class="slider round"></span>
-                   </label>
+                  <div class="font-family">
+                        <select id="options" name="options">
+                          <option value="option1">San serif</option>
+                          <option value="option2">Serif</option>
+                          <option value="option3">Mono</option>
+                        </select>
+                     </div>
+               
+                  <div class="hline">
 
-                <img src="./assets/images/icon-moon.svg" alt="">
+                  </div>
+                  <div class="mode-toggler">
+                     <label class="switch">
+                        <input type="checkbox" id="mode">
+                        <span class="slider round"></span>
+                     </label>
+
+                     <img src="./assets/images/icon-moon.svg" alt>
+                  </div>
                </div>
             </div>
-         </div>
-         <div class="search">
-            <input placeholder="Search for any word..." type="text" name="word" id="word">
-            <img id="submit" src="./assets/images/icon-search.svg" alt="search">
-         </div>
-        <div class="content" id="content">
-         <div class="word">
-            <div>
-             <h1 id="wordname">Keyboard</h1>
-             <p id="phonetic">/ki:b:d/</p>
+            <div class="searchbox">
+               <input class="search" placeholder="Search for any word..." type="text"
+                  name="word" id="word">
+               <img id="submit" src="./assets/images/icon-search.svg"
+                  alt="search">
             </div>
-             <img src="./assets/images/icon-play.svg" alt="play sound">
-          </div>
-         <div class="noun">
-             <p>noun</p>
-             <div class="line">
- 
-             </div>
-         </div>
-          <div class="meaning">
-             <p>Meaning</p>
-             <ul id="noun-mean">
+            <p class="error-message" id="error-message">Whoops, can’t be empty…</p>
+            <div class="content" id="content">
+               <div class="word">
+                  <div>
+                     <h1 id="wordname"></h1>
+                     <p id="phonetic"></p>
+                  </div>
                  
-             </ul>
-          </div>
-          <p>Synonyms<span id="synonyms">electronic keyboard</span></p>
-          <div class="verb">
-             <p>verb</p>
-             <div class="line">
-     
-             </div>
-          </div>
-           <div class="meaning">
-             <p>Meaning</p>
-             <ul id="verb-mean">
+                     <img  src="./assets/images/icon-play.svg" alt="play sound">
                  
-                 
-             </ul>
-           </div>
-           
-           <div class="line"></div>
-           <div class="source-links">
-             <p>Source</p>
-            <div class="link">
-             <a id="sourceUrls" href="https://en.wiktionary.org/wiki/keyboard" target="_blank">https://en.wiktionary.org/wiki/keyboard</a>
-             <img src="./assets/images/icon-new-window.svg" alt="">
+               </div>
+               <div class="noun">
+                  <p>noun</p>
+                  <div class="line">
+
+                  </div>
+               </div>
+               <div class="meaning">
+                  <p>Meaning</p>
+                  <ul id="noun-mean">
+
+                  </ul>
+               </div>
+               <p>Synonyms<span id="synonyms"></span></p>
+               <div class="verb">
+                  <p>verb</p>
+                  <div class="line">
+
+                  </div>
+               </div>
+               <div class="meaning">
+                  <p>Meaning</p>
+                  <ul id="verb-mean">
+
+                  </ul>
+               </div>
+
+               <div class="line"></div>
+               <div class="source-links">
+                  <p>Source</p>
+                  <div class="link">
+                     <a id="sourceUrls"
+                        href=""
+                        target="_blank"></a>
+                     <img src="./assets/images/icon-new-window.svg" alt>
+                  </div>
+               </div>
             </div>
-           </div>
-        </div>
-         
-       </div>
-    </main>
-    
 
-    <div class="projects-section">
-     <div class="title"></div>
-     
-    </div>
+         </div>
 
-<!-- <input type="text" name="word" id="word">
-<button id="submit">Search</button>
-<h1 id="phonetic"></h1>
-<p id="Meaning"></p>
-<a id="sourceUrls" href=""></a> -->
-    <script src="dictionary.js"></script>
-</body>
+         <div class="word-not-found" id="word-not-found">
+            <div class="emoji">
+               <img src="./assets/images/emoji.png" alt="">
+            </div>
+            <div class="error">
+              <p> No Definitions Found</p>
+            </div>
+            <div class="message">
+               <p>Sorry pal, we couldn't find definitions for the word you were looking for. You can try the search again at later time or head to the web instead.</p>
+            </div>
+         </div>
+      </main>
+
+      
+
+      </div>
+
+      
+
+      <script src="dictionary.js"></script>
+   </body>
 </html>
