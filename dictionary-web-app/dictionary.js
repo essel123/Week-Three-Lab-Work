@@ -4,8 +4,8 @@ function Fetch(api) {
     res
       .then(results => {
         if (!results.ok) {
-          reject(()=>{
-             console.log("error")
+          reject(() => {
+            return "error";
           });
         } else {
           return results.json();
@@ -26,7 +26,7 @@ const synonyms = document.getElementById("synonyms");
 const verbMeaning = document.getElementById("verb-mean");
 const content = document.getElementById("content");
 const errorMessage = document.getElementById("error-message");
-const wordNotFound =  document.getElementById("word-not-found")
+const wordNotFound = document.getElementById("word-not-found");
 
 function wordfetch() {
   let word = word_.value;
@@ -40,9 +40,11 @@ function wordfetch() {
       sourceUrls.setAttribute("href", data.sourceUrls);
       synonyms.textContent = data.meanings[0].synonyms;
 
+      const {audio} = data.phonetics[0]
+
       for (let i = 0; i < data.meanings[0].definitions.length; i++) {
         const element = data.meanings[0].definitions[i];
-        console.log(element);
+        // console.log(element);
         let meanings = document.createElement("li");
         // meanings++;
         meanings.textContent = element.definition;
@@ -50,67 +52,57 @@ function wordfetch() {
       }
       for (let i = 0; i < data.meanings[1].definitions.length; i++) {
         const element = data.meanings[1].definitions[i];
-        console.log(element);
+        // console.log(element);
         let meanings = document.createElement("li");
         // meanings++;
         meanings.textContent = element.definition;
+         playAudio(audio)
         verbMeaning.appendChild(meanings);
+        wordNotFound.style.display = "none";
+        content.style.display = "flex";
+        errorMessage.style.display = "none";
       }
 
       // data.meanings[0].definitions.map(ele => console.log(ele));
     })
     .catch(err => {
-      content.style.display = 'none'
-      wordNotFound.style.display = 'flex'
+      content.style.display = "none";
+      errorMessage.style.display = "none";
+      wordNotFound.style.display = "flex";
       throw new Error(err);
-      
     });
 }
 
 document.getElementById("submit").addEventListener("click", () => {
-  
-
-  if(!word_.value)
-  {
-    errorMessage.style.display = 'flex'
+  if (!word_.value) {
+    errorMessage.style.display = "flex";
     content.style.display = "none";
     wordNotFound.style.display = 'none'
-
-  }
-  else{
+  } else {
     wordfetch();
-    errorMessage.style.display = 'none'
-    content.style.display = "flex";
-    wordNotFound.style.display = 'none'
   }
 });
 
-word_.addEventListener('change',()=>{
- 
-document.addEventListener('keydown',(event)=>{
-  if (event.key === 'Enter') {
-    if(!event.target.value)
-      {
-      console.log("Nothing")
+word_.addEventListener("change", () => {
+  document.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      if (!event.target.value) {
+        console.log("Nothing");
       }
-    
-  }
-})
- 
-})
+    }
+  });
+});
 
-
-function playAudio(url){
-  
-  const audiio = new Audio
+function playAudio(url) {
+  const audio = new Audio(url)
+  audio.play()
 }
 
 const mode = document.getElementById("mode");
 mode.addEventListener("click", event => {
   if (mode.checked) {
-    document.body.classList.add('dark')
+    document.body.classList.add("dark");
   } else {
-    document.body.classList.remove('dark')
+    document.body.classList.remove("dark");
   }
 });
-
