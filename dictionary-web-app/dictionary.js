@@ -22,6 +22,8 @@ const wordname = document.getElementById("wordname");
 const nounMeaning = document.getElementById("noun-mean");
 const synonyms = document.getElementById("synonyms");
 const verbMeaning = document.getElementById("verb-mean");
+const content = document.getElementById("content")
+ 
 
 function wordfetch() {
   let word = word_.value;
@@ -64,9 +66,17 @@ document.getElementById("submit").addEventListener("click", () => {
 word_.addEventListener("change", () => {
   document.addEventListener("keydown", event => {
     if (event.key === "Enter") {
-      wordfetch();
+       document.getElementById("main").removeChild( content)
+           wordfetch();
+        content.style.display= "flex"
     } else {
       return null;
     }
   });
 });
+
+
+const mode = document.getElementById("mode")
+mode.addEventListener('click',(event)=>{
+  console.log()
+})
