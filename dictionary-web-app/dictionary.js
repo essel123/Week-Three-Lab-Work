@@ -29,15 +29,18 @@ const word_ = document.getElementById("word");
 function wordfetch() {
   let word = word_.value;
   const api = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
-  Fetch(api)
-    .then(data => {
-      // phonetic.textContent = data.phonetic;
-      // Meaning.textContent = `${data.meanings[0].definitions[0].definition}`;
-      // wordname.textContent = data.word;
-      // sourceUrls.textContent = data.sourceUrls;
-      // sourceUrls.setAttribute("href", data.sourceUrls);
-      // synonyms.textContent = data.meanings[0].synonyms;
 
+
+  if (!word) {
+    errorMessage.style.display = "flex";
+    content.style.display = "none";
+    word_.style.border = '1px solid red'
+    wordNotFound.style.display = "none";
+    
+  }
+  else{
+    Fetch(api)
+    .then(data => {
       let { word, sourceUrls } = data;
       let audio_;
       let phonetic;
@@ -48,6 +51,7 @@ function wordfetch() {
           audio_ = aud;
           phonetic = pho;
         }
+       
       }
 
       console.log(synonyms_);
@@ -55,7 +59,7 @@ function wordfetch() {
       content.innerHTML = `<div class="word">
                   <div>
                      <h1 id="wordname">${word}</h1>
-                     <p id="phonetic">${phonetic}</p>
+                     <p id="phonetic">${phonetic? phonetic:'N/A'}</p>
                   </div>
                  
                      <img  id="play" class="play" src="./assets/images/icon-play.svg" alt="play sound">
@@ -104,67 +108,42 @@ function wordfetch() {
       const play = document.getElementById("play");
       const nounMean = document.getElementById("noun-mean");
       const verbMean = document.getElementById("verb-mean");
-      const example = document.getElementById("example");
+     
       data.meanings[0].definitions.forEach(def => {
-        // Create a list item for each definition
+       
         const li = document.createElement("li");
 
-        // Add the definition text
+       
         li.innerHTML = `${def.definition}`;
+
+        if (def.example) {
+         li.innerHTML += `  <br/> <span> "${def.example}</span>"`;
+        }
         nounMean.appendChild(li);
       });
 
-
-      if(data.meanings[1].definitions){
+      if (data.meanings[1].definitions) {
         data.meanings[1].definitions.forEach(def => {
-          // Create a list item for each definition
+         
           const li = document.createElement("li");
-  
-          // Add the definition text
           li.innerHTML = `${def.definition}`;
-  
-          // Add an example if it exists
+
           if (def.example) {
-            example.textContent = `"${def.example}"`;
-          }
-  
-          // Append the list item to the <ul>
+            li.innerHTML += `<br/> <span>"${def.example}</span>"`;
+           }
           verbMean.appendChild(li);
         });
-  
-      }
-      else{
+      } 
 
-      }
-
-      
       play.addEventListener("click", () => {
         playAudio(audio_);
       });
 
-      // for (let i = 0; i < data.meanings[0].definitions.length; i++) {
-      //   const element = data.meanings[0].definitions[i];
-      //   // console.log(element);
-      //   let meanings = document.createElement("li");
-      //   // meanings++;
-      //   meanings.textContent = element.definition;
-      //   nounMeaning.appendChild(meanings);
-      // }
-      // for (let i = 0; i < data.meanings[1].definitions.length; i++) {
-      //   const element = data.meanings[1].definitions[i];
-      //   // console.log(element);
-      //   let meanings = document.createElement("li");
-      //   // meanings++;
-      //   meanings.textContent = element.definition;
-      // const play =  document.getElementById("play")
-
-      //   verbMeaning.appendChild(meanings);
+     
       wordNotFound.style.display = "none";
       content.style.display = "flex";
       errorMessage.style.display = "none";
-      // }
 
-      // data.meanings[0].definitions.map(ele => console.log(ele));
     })
     .catch(err => {
       console.log("erro");
@@ -172,24 +151,19 @@ function wordfetch() {
       errorMessage.style.display = "none";
       wordNotFound.style.display = "flex";
     });
+  }
+  
 }
 
 document.getElementById("submit").addEventListener("click", () => {
-  if (!word_.value) {
-    errorMessage.style.display = "flex";
-    content.style.display = "none";
-    wordNotFound.style.display = "none";
-  } else {
-    wordfetch();
-  }
+ wordfetch()
 });
 
 word_.addEventListener("change", () => {
+  console.log('kkk')
   document.addEventListener("keydown", event => {
     if (event.key === "Enter") {
-      if (!event.target.value) {
-        console.log("Nothing");
-      }
+      wordfetch()
     }
   });
 });
@@ -207,3 +181,42 @@ mode.addEventListener("click", event => {
     document.body.classList.remove("dark");
   }
 });
+
+
+
+// Get elements
+const dropdownBtn = document.getElementById("dropdown-btn");
+const dropdownContent = document.getElementById("dropdown-content");
+const text = document.getElementById("text");
+
+// Add event listener for hovering (handled by CSS)
+dropdownBtn.addEventListener('click', () => {
+    // Toggle the dropdown visibility when clicked
+    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+});
+
+// Add click event listener to each dropdown option
+const fontOptions = dropdownContent.getElementsByTagName('a');
+for (let option of fontOptions) {
+    option.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        const selectedFont = option.getAttribute('data-font');
+        
+        // Update the text with the selected font
+       document.body.style.fontFamily = selectedFont
+        
+        // Update the dropdown button text
+        dropdownBtn.textContent = option.textContent;
+        
+        // Hide the dropdown after selection
+        dropdownContent.style.display = 'none';
+    });
+}
+
+// Optional: Close the dropdown if clicked outside
+document.addEventListener('click', function(event) {
+    if (!dropdownBtn.contains(event.target)) {
+        dropdownContent.style.display = 'none';
+    }
+});
+

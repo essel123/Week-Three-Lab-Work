@@ -14,10 +14,16 @@
     --filter:invert(19%) sepia(45%) saturate(410%) hue-rotate(250deg);
 }
 
+@font-face {
+    font-family:'Inter-Bold.ttf' ;
+    src: url(./assets/fonts/inter/static/Inter-Bold.ttf);
+}
 body {
     background: var(--bg);
-    font-family: sans-serif, serif, monospace;
-    transition: 0.5s ease-out;
+    font-family: 'Inter-Bold.ttf';
+    scroll-behavior: smooth;
+    transition: 0.2s ease-out; 
+   
 }
 
 main {
@@ -28,23 +34,22 @@ main {
     align-items: center;
 }
 
-.top {
-    margin-bottom: 20px;
-}
+
 
 .search {
     width: 100%;
-    height: 100%;
     border: none;
     background: transparent;
     outline: none;
     font-size: 20px;
     font-weight: bold;
     transition: 0.3s ease;
+   
     
 }
 .searchbox{
     position: relative;
+   
 }
 .searchbox img{
     position: absolute;
@@ -79,6 +84,21 @@ main {
 }
 
 
+ul li::before{
+    display: inline-block;
+    content: '\2022'; 
+    color: #A445ED; 
+    font-size: 20px;
+    font-weight: 800;
+    width: 1rem;
+    
+   
+}
+ ul li span{
+    color: #757575;
+    margin-left: 20px;
+ }
+
 .hline {
     height: 32px;
     width: 1px;
@@ -98,6 +118,7 @@ main {
 }
 
 .right {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -184,8 +205,8 @@ span {
 
 ul li {
     padding-top: 10px;
-    list-style-type: disc;
-    list-style-position: outside;
+    list-style-type: none;
+    list-style-position: inside;
 }
 
 
@@ -283,20 +304,40 @@ input:checked+.slider:before {
 }
 
 
-select {
+
+.dropdown{
+    box-sizing: border-box;
+    padding-top: 30%; 
+    z-index: 200;
+}
+
+.dropdown h3{
+    cursor: pointer;
+}
+
+.search:hover{
+    border: 1px solid #A445ED;
+
+}
+
+/* select {
+    position: relative;
+    appearance: none;
     cursor: pointer;
     border: none;
     outline: none;
-    width: 100px;
+    width: 150px;
     height: 50px;
     background: var(--bg);
     color: var(--color);
-
 }
 
-select option {
-    padding: 20px;
-}
+ option {
+    position: absolute;
+    background: #000;
+    border: none;
+    
+} */
 
 
 .word-not-found {
@@ -347,4 +388,10 @@ select option:hover{
 
 .moon{
     fill: var(--filter);
+}
+
+
+.synonyms span:hover{
+    text-decoration: underline;
+    cursor: pointer;
 }

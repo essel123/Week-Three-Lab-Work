@@ -6,8 +6,62 @@
       <title>Dictionary</title>
       <link rel="stylesheet" href="dictionary.css">
    </head>
+
+   <style>
+     
+.dropdown {
+    position: relative;
+    bottom: 35px;
+    display: inline-block;
+   
+}
+
+.dropdown-btn {
+    background-color: transparent;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    transform: translate(-30%);
+    background: #f9f9f9;
+    width: 100%;
+    min-width: 160px;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 30px 1px rgba(0,0,0,0.59);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+    display: block;
+    background: white;
+}
+
+.dropdown-content a:hover {
+   color: #A445ED;   
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Dropdown when clicked */
+.dropdown.open .dropdown-content {
+    display: block;
+}
+
+   </style>
    <body>
    
+      
 
       <main>
          <div class="dictionary">
@@ -16,13 +70,25 @@
                   <img class="logo" src="./assets/images/logo.svg" alt>
                </div>
                <div class="right">
-                  <div class="font-family">
+                  <!-- <div class="font-family">
                         <select id="options" name="options">
                           <option value="option1">San serif</option>
                           <option value="option2">Serif</option>
                           <option value="option3">Mono</option>
                         </select>
-                     </div>
+                     
+                     </div> -->
+
+                     <div class="dropdown">
+                        <button class="dropdown-btn" id="dropdown-btn">San Serif  </button>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <a href="#" data-font="sans-serif">San Serif </a>
+                            <a href="#" data-font="serif">Serif</a>
+                            <a href="#" data-font="monospace">Mono</a>
+                        </div>
+                    </div>
+                    <img src="./assets/images/icon-arrow-down.svg"  style="width: 20px;" alt="">
+                    
                
                   <div class="hline">
 
