@@ -11,16 +11,10 @@ function Fetch(api) {
           return results.json();
         }
       })
-      .then(data => resolve(data[0]));
+      .then(data => data.map(dt => resolve(dt)));
   });
 }
 
-// const phonetic = document.getElementById("phonetic");
-// const sourceUrls = document.getElementById("sourceUrls");
-// const wordname = document.getElementById("wordname");
-// const nounMeaning = document.getElementById("noun-mean");
-// const synonyms = document.getElementById("synonyms");
-// const verbMeaning = document.getElementById("verb-mean");
 const content = document.getElementById("content");
 const errorMessage = document.getElementById("error-message");
 const wordNotFound = document.getElementById("word-not-found");
@@ -30,159 +24,135 @@ function wordfetch() {
   let word = word_.value;
   const api = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
 
-
   if (!word) {
     errorMessage.style.display = "flex";
     content.style.display = "none";
-    word_.style.border = '1px solid red'
+    word_.style.border = "2px solid red";
     wordNotFound.style.display = "none";
-    
-  }
-  else{
+  } else {
+   
     Fetch(api)
-    .then(data => {
-      let { word, sourceUrls } = data;
-      let audio_;
-      let phonetic;
-      const synonyms_ = data.meanings[0].synonyms;
+      .then(data => {
+        let audio_;
+        let phonetic;
 
-      for (const { text: pho, audio: aud } of data.phonetics) {
-        if (aud != "") {
-          audio_ = aud;
-          phonetic = pho;
+        for (const { text: pho, audio: aud } of data.phonetics) {
+          if (aud != "" && aud) {
+            audio_ = aud;
+            phonetic = pho;
+            
+          }
+        
         }
-       
-      }
+        content.innerHTML = " <div class='loader-center'> <div class='loader'></div></div>";
 
-      console.log(synonyms_);
+        setTimeout(() => {
+          let word = `  <br> <br><div class="word">
+        <div>
+           <h1 id="wordname">${data.word}</h1>
+           <br>
+           <p id="phonetic">${phonetic}</p>
+        </div>
 
-      content.innerHTML = `<div class="word">
-                  <div>
-                     <h1 id="wordname">${word}</h1>
-                     <p id="phonetic">${phonetic? phonetic:'N/A'}</p>
-                  </div>
-                 
-                     <img  id="play" class="play" src="./assets/images/icon-play.svg" alt="play sound">
-                 
-               </div>
-               <div class="noun">
-                  <p>noun</p>
-                  <div class="line">
+           <img  id="play" class="play" src="./assets/images/icon-play.svg" alt="play sound">
 
-                  </div>
-               </div>
-               <div class="meaning">
-                  <p>Meaning</p>
-                  <ul id="noun-mean">
-
-                  </ul>
-               </div>
-               <p class="synonyms">Synonyms<span id="synonyms">${synonyms_}</span></p>
-               <div class="verb">
-                  <p>verb</p>
-                  <div class="line">
-
-                  </div>
-               </div>
-               <div class="meaning">
-                  <p>Meaning</p>
-                  <ul id="verb-mean">
-
-                  </ul>
-                   <div class="example">
-                      <p id="example"></p>
-                   </div>
-               </div>
-
-               <div class="line"></div>
-               <div class="source-links">
-                  <p>Source</p>
-                  <div class="link">
-                     <a id="sourceUrls"
-                        href="${sourceUrls}"
-                        target="_blank">${sourceUrls}</a>
-                     <img src="./assets/images/icon-new-window.svg" alt>
-                  </div>
-               </div>`;
-
-      const play = document.getElementById("play");
-      const nounMean = document.getElementById("noun-mean");
-      const verbMean = document.getElementById("verb-mean");
-     
-      data.meanings[0].definitions.forEach(def => {
-       
-        const li = document.createElement("li");
-
-       
-        li.innerHTML = `${def.definition}`;
-
-        if (def.example) {
-         li.innerHTML += `  <br/> <span> "${def.example}</span>"`;
-        }
-        nounMean.appendChild(li);
-      });
-
-      if (data.meanings[1].definitions) {
-        data.meanings[1].definitions.forEach(def => {
+     </div>`;
          
-          const li = document.createElement("li");
-          li.innerHTML = `${def.definition}`;
+          content.innerHTML = word;
+          data.meanings.map(meaning => {
+            content.innerHTML += ` <br> <br> <div class="noun">
+              <p>${meaning.partOfSpeech}</p>
+              <div class="line" />
+            </div>
+            <br>
+            `;
 
-          if (def.example) {
-            li.innerHTML += `<br/> <span>"${def.example}</span>"`;
-           }
-          verbMean.appendChild(li);
-        });
-      } 
+            content.innerHTML += ` <br><br><div class ='meaning'>
+             <p>Meaning</p></div> <br>`
 
-      play.addEventListener("click", () => {
-        playAudio(audio_);
+            meaning.definitions.map(def => {
+              if (def.definition) {
+                content.innerHTML += `
+                  <ul id="">
+                     <li>${def.definition} <br/><span>${def.example?`"${def.example}"`:''}</span></li>
+                    </ul>
+                `;
+              }
+            });
+    
+             content.innerHTML += ` <p class="synonyms">Synonyms <span id="synonyms">${meaning.synonyms || 'N/A'}</span></p>`
+           
+          });
+
+          content.innerHTML += ` <br><br><div class="line"></div>
+          <br>
+                 <div class="source-links">
+                    <p>Source</p>
+                    <div class="link">
+                       <a id="sourceUrls"
+                          href="${data.sourceUrls}"
+                          target="_blank">${data.sourceUrls}</a>
+                       <img src="./assets/images/icon-new-window.svg" alt>
+                    </div>
+                 </div>`
+          const play = document.getElementById("play");
+
+          play.addEventListener("click", () => {
+            const audio= new Audio(audio_);
+            audio.play();
+          });
+
+        }, 2000);
+
+        
+        content.style.display = "flex";
+        errorMessage.style.display = "none";
+        wordNotFound.style.display = "none";
+      })
+      .catch(err => {
+        console.log(err);
+        content.style.display = "none";
+        errorMessage.style.display = "none";
+        wordNotFound.style.display = "flex";
       });
-
-     
-      wordNotFound.style.display = "none";
-      content.style.display = "flex";
-      errorMessage.style.display = "none";
-
-    })
-    .catch(err => {
-      console.log("erro");
-      content.style.display = "none";
-      errorMessage.style.display = "none";
-      wordNotFound.style.display = "flex";
-    });
   }
-  
 }
 
 document.getElementById("submit").addEventListener("click", () => {
- wordfetch()
+  wordfetch();
 });
 
-word_.addEventListener("change", () => {
-  console.log('kkk')
-  document.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      wordfetch()
-    }
-  });
+document.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    wordfetch();
+    
+word_.addEventListener("change", (event) => {
+  if (!event.target.value) {
+        console.log(err);
+        content.style.display = "none";
+        errorMessage.style.display = "flex";
+        wordNotFound.style.display = "none";
+  }else{
+    wordfetch();
+  }
+
+  
 });
 
-function playAudio(url) {
-  const audio = new Audio(url);
-  audio.play();
-}
+  }
+});
+
 
 const mode = document.getElementById("mode");
 mode.addEventListener("click", event => {
   if (mode.checked) {
     document.body.classList.add("dark");
+    document.getElementById('moon').style.stroke = '#A445ED'
   } else {
     document.body.classList.remove("dark");
+    document.getElementById('moon').style.stroke = '#838383'
   }
 });
-
-
 
 // Get elements
 const dropdownBtn = document.getElementById("dropdown-btn");
@@ -190,33 +160,33 @@ const dropdownContent = document.getElementById("dropdown-content");
 const text = document.getElementById("text");
 
 // Add event listener for hovering (handled by CSS)
-dropdownBtn.addEventListener('click', () => {
-    // Toggle the dropdown visibility when clicked
-    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+dropdownBtn.addEventListener("click", () => {
+  // Toggle the dropdown visibility when clicked
+  dropdownContent.style.display =
+    dropdownContent.style.display === "block" ? "none" : "block";
 });
 
 // Add click event listener to each dropdown option
-const fontOptions = dropdownContent.getElementsByTagName('a');
+const fontOptions = dropdownContent.getElementsByTagName("a");
 for (let option of fontOptions) {
-    option.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default link behavior
-        const selectedFont = option.getAttribute('data-font');
-        
-        // Update the text with the selected font
-       document.body.style.fontFamily = selectedFont
-        
-        // Update the dropdown button text
-        dropdownBtn.textContent = option.textContent;
-        
-        // Hide the dropdown after selection
-        dropdownContent.style.display = 'none';
-    });
+  option.addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent default link behavior
+    const selectedFont = option.getAttribute("data-font");
+
+    // Update the text with the selected font
+    document.body.style.fontFamily = selectedFont;
+
+    // Update the dropdown button text
+    dropdownBtn.textContent = option.textContent;
+
+    // Hide the dropdown after selection
+    dropdownContent.style.display = "none";
+  });
 }
 
 // Optional: Close the dropdown if clicked outside
-document.addEventListener('click', function(event) {
-    if (!dropdownBtn.contains(event.target)) {
-        dropdownContent.style.display = 'none';
-    }
+document.addEventListener("click", function(event) {
+  if (!dropdownBtn.contains(event.target)) {
+    dropdownContent.style.display = "none";
+  }
 });
-
