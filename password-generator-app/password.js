@@ -12,11 +12,8 @@ const showVisual = document.getElementById("show-visual");
 let genPassword = "";
 
 number.textContent = slider.value;
-copy.addEventListener("click", () => {
-  copied.style.display = "flex";
-});
 
-function updateSliderBackground() {
+const updateSliderBackground = () => {
   const value = slider.value;
   const min = slider.min;
   const max = slider.max;
@@ -26,7 +23,7 @@ function updateSliderBackground() {
 
   // Set the background style dynamically
   slider.style.background = `linear-gradient(to right, #A4FFAF ${percentage}%, #18171F ${percentage}%)`;
-}
+};
 
 // Initialize the slider background
 updateSliderBackground();
@@ -36,61 +33,11 @@ slider.addEventListener("input", event => {
   number.textContent = event.target.value;
 });
 
-
-function timeout(){
-     
+function timeout() {
   setTimeout(() => {
     document.getElementById("error").style.display = "none";
   }, 2000);
 }
-function generatePassword() {
-  const upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
-  const numberChars = "0123456789";
-  const symbolChars = "!@#$%^&*()_-+=<>?/";
-
-  let passwordChars = "";
-  let passwordLength = slider.value;
-
-  if (option1.checked) {
-    passwordChars += upperCaseChars;
-  }
-  if (option2.checked) {
-    passwordChars += lowerCaseChars;
-  }
-  if (option3.checked) {
-    passwordChars += numberChars;
-  }
-  if (option4.checked) {
-    passwordChars += symbolChars;
-  }
-
-  if (!passwordChars) {
-    document.getElementById("error").style.display = "flex";
-    timeout()
-    return;
-  }
-
-  if (slider.value === '0') {
-    document.getElementById("error").textContent = "Set character length"
-    document.getElementById("error").style.display = "flex";
-    timeout();
-   return;
-  }
-
- 
-  genPassword = "";
-  for (let i = 0; i < passwordLength; i++) {
-    const randomIndex = Math.floor(Math.random() * passwordChars.length);
-    genPassword += passwordChars[randomIndex];
-  }
-
-  password.textContent = genPassword;
-}
-
-genPasswordBtn.addEventListener("click", () => {
-  generatePassword();
-});
 
 const strengthBars = [
   document.getElementById("strength1"),
@@ -99,9 +46,10 @@ const strengthBars = [
   document.getElementById("strength4")
 ];
 
-// Function to update the strength based on the selected options
-function updateStrength() {
-  // Get the checked status of each checkbox
+const strengthText = document.getElementById("strength-text");
+
+// Function to calculate password strength based on selected options and password length
+const calculateStrength = () => {
   const checkedOptions = [
     option1.checked,
     option2.checked,
@@ -109,47 +57,140 @@ function updateStrength() {
     option4.checked
   ];
 
-  // Count how many options are checked
-  const strengthLevel = checkedOptions.filter(Boolean).length;
-  const strengthText = document.getElementById("strength-text");
+  const selectedTypes = checkedOptions.filter(Boolean).length;
+  const passwordLength = parseInt(slider.value);
 
-  // Loop through each strength bar and update its color
-  for (let i = 0; i < strengthBars.length; i++) {
-    // Set the background color based on the number of checked options
-    if (i < strengthLevel) {
-      if (strengthLevel === 1) {
-        strengthBars[i].style.backgroundColor = "#F64A4A";
-      } else if (strengthLevel === 2) {
-        strengthBars[i].style.backgroundColor = "#FB7C58";
-      } else if (strengthLevel === 3) {
-        strengthBars[i].style.backgroundColor = "#F8CD65";
-      } else {
-        strengthBars[i].style.backgroundColor = "#A4FFAF";
-      }
-    } else {
-      strengthBars[i].style.backgroundColor = "transparent";
-    }
+  let strengthLevel = 1; // Default to "Too Weak"
+
+  if (selectedTypes >= 2 && passwordLength >= 8) {
+    strengthLevel = 2; // "Weak"
   }
 
-  if (strengthLevel === 1) {
-    strengthText.innerText = "TOO WEAK!";
-  } else if (strengthLevel === 2) {
-    strengthText.innerText = "WEAK";
-  } else if (strengthLevel === 3) {
-    strengthText.innerText = "MEDIUM";
-  } else if (strengthLevel === 4) {
-    strengthText.innerText = "STRONG";
-  } else {
-    strengthText.innerText = "";
+  if (selectedTypes >= 3 && passwordLength >= 8) {
+    strengthLevel = 3; // "Medium"
+  }
+
+  if (selectedTypes >= 4 && passwordLength >= 12) {
+    strengthLevel = 4; // "Strong"
+  }
+
+  return strengthLevel;
+};
+
+class PasswordGen {
+  constructor(...characterTypes) {
+    [
+      this.upperCaseChars,
+      this.lowerCaseChars,
+      this.numberChars,
+      this.symbolChars
+    ] = characterTypes;
+  }
+
+  generatePassword() {
+    let passwordChars = "";
+    let passwordLength = slider.value;
+
+    if (option1.checked) {
+      passwordChars += this.upperCaseChars;
+    }
+    if (option2.checked) {
+      passwordChars += this.lowerCaseChars;
+    }
+    if (option3.checked) {
+      passwordChars += this.numberChars;
+    }
+    if (option4.checked) {
+      passwordChars += this.symbolChars;
+    }
+
+    if (!passwordChars) {
+      document.getElementById("error").style.display = "flex";
+      timeout();
+      return;
+    }
+
+    if (slider.value === "0") {
+      document.getElementById("error").textContent = "Set character length";
+      document.getElementById("error").style.display = "flex";
+      timeout();
+      return;
+    }
+
+    genPassword = "";
+    for (let i = 0; i < passwordLength; i++) {
+      const randomIndex = Math.floor(Math.random() * passwordChars.length);
+      genPassword += passwordChars[randomIndex];
+    }
+    password.textContent = genPassword;
+  }
+
+  copyPassword() {
+    copy.addEventListener("click", () => {
+      copied.style.display = "flex";
+      setTimeout(()=>{
+        copied.style.display = "none";
+      }, 2000)
+
+
+     
+       const cd = navigator.clipboard;
+       cd.writeText(genPassword)
+    });
+  }
+
+ 
+  updateStrength() {
+    const strengthLevel = calculateStrength();
+    // Loop through each strength bar and update its color
+    for (let i = 0; i < strengthBars.length; i++) {
+      if (i < strengthLevel) {
+        if (strengthLevel === 1) {
+          strengthBars[i].style.backgroundColor = "#F64A4A";
+        } else if (strengthLevel === 2) {
+          strengthBars[i].style.backgroundColor = "#FB7C58";
+        } else if (strengthLevel === 3) {
+          strengthBars[i].style.backgroundColor = "#F8CD65";
+        } else if (strengthLevel === 4) {
+          strengthBars[i].style.backgroundColor = "#A4FFAF";
+        }
+      } else {
+        strengthBars[i].style.backgroundColor = "transparent";
+      }
+    }
+
+    switch (strengthLevel) {
+      case 1:
+        strengthText.innerText = "TOO WEAK!";
+        break;
+      case 2:
+        strengthText.innerText = "WEAK";
+        break;
+      case 3:
+        strengthText.innerText = "MEDIUM";
+        break;
+      case 4:
+        strengthText.innerText = "STRONG";
+        break;
+    }
   }
 }
 
-option1.addEventListener("change", updateStrength);
-option2.addEventListener("change", updateStrength);
-option3.addEventListener("change", updateStrength);
-option4.addEventListener("change", updateStrength);
+const pass = new PasswordGen([
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "abcdefghijklmnopqrstuvwxyz",
+  "0123456789",
+  "!@#$%^&*()_-+=<>?/"
+]);
 
-updateStrength();
+genPasswordBtn.addEventListener("click", () => {
+  pass.generatePassword();
+});
 
+pass.copyPassword()
 
-
+option1.addEventListener("change", pass.updateStrength);
+option2.addEventListener("change", pass.updateStrength);
+option3.addEventListener("change", pass.updateStrength);
+option4.addEventListener("change", pass.updateStrength);
+slider.addEventListener("input", pass.updateStrength);
