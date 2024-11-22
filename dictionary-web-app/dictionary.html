@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Dictionary</title>
+      <link rel="stylesheet" href="dictionary.css">
+   </head>
+
+   <style>
+     
+
+   </style>
+   <body>
+
+      <main>
+         <div class="dictionary">
+            <div class="top">
+               <div class="left">
+                  <img class="logo" src="./assets/images/logo.svg" alt>
+               </div>
+               <div class="right">
+
+                     <div class="dropdown">
+                        <button class="dropdown-btn" id="dropdown-btn">San Serif  </button>
+                        <div class="dropdown-content" id="dropdown-content">
+                            <a href="#" data-font="sans-serif">San Serif </a>
+                            <a href="#" data-font="serif">Serif</a>
+                            <a href="#" data-font="monospace">Mono</a>
+                        </div>
+                    </div>
+                    <img src="./assets/images/icon-arrow-down.svg"  style="width: 20px;" alt="">
+                    
+               
+                  <div class="hline">
+
+                  </div>
+                  <div class="mode-toggler">
+                     <label class="switch">
+                        <input type="checkbox" id="mode">
+                        <span class="slider round"></span>
+                     </label>
+                     <svg class="moon" id="moon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22"><path fill="none"  stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z"/></svg>
+                  </div>
+               </div>
+               
+            </div>
+            <div class="searchbox">
+               <input class="search" placeholder="Search for any word..." type="text"
+                  name="word" id="word">
+               <img id="submit" src="./assets/images/icon-search.svg"
+                  alt="search">
+            </div>
+            <p class="error-message" id="error-message">Whoops, can’t be empty…</p>
+            <div class="content" id="content">
+               
+            </div>
+
+         </div>
+
+         <div class="word-not-found" id="word-not-found">
+            <div class="emoji">
+               <img src="./assets/images/emoji.png" alt="">
+            </div>
+            <div class="error">
+              <p> No Definitions Found</p>
+            </div>
+            <div class="message">
+               <p>Sorry pal, we couldn't find definitions for the word you were looking for. You can try the search again at later time or head to the web instead.</p>
+            </div>
+         </div>
+      </main>
+
+      
+
+      </div>
+
+
+      <script src="dictionary.js"></script>
+   </body>
+</html>
