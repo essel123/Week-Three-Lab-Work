@@ -1,3 +1,5 @@
+
+// Promise to handle api request
 function Fetch(api) {
   return new Promise((resolve, reject) => {
     const res = fetch(api);
@@ -30,7 +32,6 @@ function wordfetch() {
     word_.style.border = "2px solid red";
     wordNotFound.style.display = "none";
   } else {
-   
     Fetch(api)
       .then(data => {
         let audio_;
@@ -40,11 +41,10 @@ function wordfetch() {
           if (aud != "" && aud) {
             audio_ = aud;
             phonetic = pho;
-            
           }
-        
         }
-        content.innerHTML = " <div class='loader-center'> <div class='loader'></div></div>";
+        content.innerHTML =
+          " <div class='loader-center'> <div class='loader'></div></div>";
 
         setTimeout(() => {
           let word = `  <br> <br><div class="word">
@@ -57,7 +57,7 @@ function wordfetch() {
            <img  id="play" class="play" src="./assets/images/icon-play.svg" alt="play sound">
 
      </div>`;
-         
+
           content.innerHTML = word;
           data.meanings.map(meaning => {
             content.innerHTML += ` <br> <br> <div class="noun">
@@ -68,20 +68,22 @@ function wordfetch() {
             `;
 
             content.innerHTML += ` <br><br><div class ='meaning'>
-             <p>Meaning</p></div> <br>`
+             <p>Meaning</p></div> <br>`;
 
             meaning.definitions.map(def => {
               if (def.definition) {
                 content.innerHTML += `
                   <ul id="">
-                     <li>${def.definition} <br/><span>${def.example?`"${def.example}"`:''}</span></li>
+                     <li>${def.definition} <br/><span>${def.example
+                  ? `"${def.example}"`
+                  : ""}</span></li>
                     </ul>
                 `;
               }
             });
-    
-             content.innerHTML += ` <p class="synonyms">Synonyms <span id="synonyms">${meaning.synonyms || 'N/A'}</span></p>`
-           
+
+            content.innerHTML += ` <p class="synonyms">Synonyms <span id="synonyms">${meaning.synonyms ||
+              "N/A"}</span></p>`;
           });
 
           content.innerHTML += ` <br><br><div class="line"></div>
@@ -94,17 +96,15 @@ function wordfetch() {
                           target="_blank">${data.sourceUrls}</a>
                        <img src="./assets/images/icon-new-window.svg" alt>
                     </div>
-                 </div>`
+                 </div>`;
           const play = document.getElementById("play");
 
           play.addEventListener("click", () => {
-            const audio= new Audio(audio_);
+            const audio = new Audio(audio_);
             audio.play();
           });
-
         }, 2000);
 
-        
         content.style.display = "flex";
         errorMessage.style.display = "none";
         wordNotFound.style.display = "none";
@@ -118,68 +118,61 @@ function wordfetch() {
   }
 }
 
+//searching word using the search-icon
 document.getElementById("submit").addEventListener("click", () => {
   wordfetch();
 });
 
+// searching word using Enter key
 document.addEventListener("keydown", event => {
   if (event.key === "Enter") {
     wordfetch();
-    
-word_.addEventListener("change", (event) => {
-  if (!event.target.value) {
+
+    word_.addEventListener("change", event => {
+      if (!event.target.value) {
         console.log(err);
         content.style.display = "none";
         errorMessage.style.display = "flex";
         wordNotFound.style.display = "none";
-  }else{
-    wordfetch();
-  }
-
-  
-});
-
+      } else {
+        wordfetch();
+      }
+    });
   }
 });
 
-
+//mode toggler
 const mode = document.getElementById("mode");
 mode.addEventListener("click", event => {
   if (mode.checked) {
     document.body.classList.add("dark");
-    document.getElementById('moon').style.stroke = '#A445ED'
+    document.getElementById("moon").style.stroke = "#A445ED";
   } else {
     document.body.classList.remove("dark");
-    document.getElementById('moon').style.stroke = '#838383'
+    document.getElementById("moon").style.stroke = "#838383";
   }
 });
 
-// Get elements
+//for the dropdown
 const dropdownBtn = document.getElementById("dropdown-btn");
 const dropdownContent = document.getElementById("dropdown-content");
 const text = document.getElementById("text");
 
-// Add event listener for hovering (handled by CSS)
 dropdownBtn.addEventListener("click", () => {
-  // Toggle the dropdown visibility when clicked
   dropdownContent.style.display =
     dropdownContent.style.display === "block" ? "none" : "block";
 });
 
-// Add click event listener to each dropdown option
 const fontOptions = dropdownContent.getElementsByTagName("a");
 for (let option of fontOptions) {
   option.addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent default link behavior
+    event.preventDefault();
     const selectedFont = option.getAttribute("data-font");
 
-    // Update the text with the selected font
     document.body.style.fontFamily = selectedFont;
 
-    // Update the dropdown button text
     dropdownBtn.textContent = option.textContent;
 
-    // Hide the dropdown after selection
     dropdownContent.style.display = "none";
   });
 }
